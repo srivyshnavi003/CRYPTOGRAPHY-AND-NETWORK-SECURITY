@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <string.h>
+
+void encryptMessage(char message[], char key[]) {
+    int keyLength = strlen(key);
+    int messageLength = strlen(message);
+
+    // Calculate the number of rows required
+    int rows = (messageLength + keyLength - 1) / keyLength;
+
+    // Create a 2D array to store the message in a matrix
+    char matrix[rows][keyLength];
+
+    // Initialize matrix with spaces
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < keyLength; j++) {
+            matrix[i][j] = ' ';
+        }
+    }
+
+    // Populate the matrix with the message
+    int index = 0;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < keyLength && index < messageLength; j++) {
+            matrix[i][j] = message[index++];
+        }
+    }
+
+    // Encrypt the message using the key
+    for (int i = 0; i < keyLength; i++) {
+        int col = key[i] - '0' - 1;
+        for (int j = 0; j < rows; j++) {
+            printf("%c", matrix[j][col]);
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    char message[100];
+    char key[100];
+
+    printf("Enter the message to encrypt: ");
+    fgets(message, sizeof(message), stdin);
+    message[strcspn(message, "\n")] = '\0';
+
+    printf("Enter the key for encryption (e.g., 3124): ");
+    fgets(key, sizeof(key), stdin);
+    key[strcspn(key, "\n")] = '\0';
+
+    encryptMessage(message, key);
+
+    return 0;
+}
