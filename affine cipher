@@ -1,0 +1,50 @@
+#include <stdio.h>
+
+int modInverse(int a, int m) {
+    a = a % m;
+    for (int x = 1; x < m; x++)
+        if ((a * x) % m == 1)
+            return x;
+    return 1;
+}
+
+void affineCipherEncrypt(char message[], int a, int b) {
+    int i;
+    for (i = 0; message[i]; i++) {
+        if (message[i] != ' ') {
+            message[i] = (char)((a * (message[i] - 'A') + b) % 26 + 'A');
+        }
+    }
+}
+
+void affineCipherDecrypt(char message[], int a, int b) {
+    int aInverse = modInverse(a, 26);
+    int i;
+    for (i = 0; message[i]; i++) {
+        if (message[i] != ' ') {
+            message[i] = (char)(aInverse * (message[i] - 'A' - b + 26) % 26 + 'A');
+        }
+    }
+}
+
+int main() {
+    char message[100];
+    int a, b;
+
+    printf("Enter the message to encrypt: ");
+    fgets(message, sizeof(message), stdin);
+    
+    printf("Enter the key 'a' for encryption (must be coprime with 26): ");
+    scanf("%d", &a);
+
+    printf("Enter the key 'b' for encryption: ");
+    scanf("%d", &b);
+
+    affineCipherEncrypt(message, a, b);
+    printf("Encrypted Message: %s\n", message);
+
+    affineCipherDecrypt(message, a, b);
+    printf("Decrypted Message: %s\n", message);
+
+    return 0;
+}
