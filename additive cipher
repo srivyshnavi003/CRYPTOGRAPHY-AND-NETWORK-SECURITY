@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+void additiveCipherEncrypt(char message[], int key) {
+    int i;
+    for (i = 0; message[i]; i++) {
+        if (message[i] != ' ') {
+            message[i] = (char)((message[i] - 'A' + key) % 26 + 'A');
+        }
+    }
+}
+
+void additiveCipherDecrypt(char message[], int key) {
+    int i;
+    for (i = 0; message[i]; i++) {
+        if (message[i] != ' ') {
+            message[i] = (char)((message[i] - 'A' - key + 26) % 26 + 'A');
+        }
+    }
+}
+
+int main() {
+    char message[100];
+    int key;
+
+    printf("Enter the message to encrypt: ");
+    fgets(message, sizeof(message), stdin);
+    
+    printf("Enter the key for encryption: ");
+    scanf("%d", &key);
+
+    additiveCipherEncrypt(message, key);
+    printf("Encrypted Message: %s\n", message);
+
+    additiveCipherDecrypt(message, key);
+    printf("Decrypted Message: %s\n", message);
+
+    return 0;
+}
